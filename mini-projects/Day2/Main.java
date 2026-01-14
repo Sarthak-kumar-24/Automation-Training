@@ -1,116 +1,74 @@
 import java.util.Scanner;
 
 public class Main {
-
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "admin123";
-
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
-        StudentManager manager = new StudentManager();
+        LoginService login = new LoginService();
 
-        /* ================= LOGIN ================= */
-
-        System.out.print("Username: ");
-        String user = sc.next();
-
-        System.out.print("Password: ");
-        String pass = sc.next();
-
-        if (!user.equals(USERNAME) || !pass.equals(PASSWORD)) {
-            System.out.println(" Invalid login credentials");
+        if (!login.login()) {
+            System.out.println(" Login Failed");
             return;
         }
 
-        System.out.println(" Login Successful");
+        EmployeeService service = new EmployeeService();
 
-        /* ================= MENU ================= */
-
-        int choice;
-        do {
+        while (true) {
             System.out.println("""
-                \n--- Student Management System ---
-                1. Add Student
-                2. Display All Students
-                3. Search Student by Eno
-                4. Update Student Branch
-                5. Delete Student by Eno
-                6. Display Sorted Students
-                7. Exit
+                \n1.Add Employee
+                2.Display All
+                3.Search by ID
+                4.Update Salary
+                5.Delete Employee
+                6.Display Sorted
+                7.Display Departments
+                8.Exit
                 """);
 
-            System.out.print("Enter choice: ");
-            choice = sc.nextInt();
+            int choice = sc.nextInt();
 
             try {
                 switch (choice) {
-
                     case 1 -> {
-                        System.out.print("Eno: ");
-                        int eno = sc.nextInt();
-
+                        System.out.print("ID: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
                         System.out.print("Name: ");
-                        String name = sc.next();
+                        String name = sc.nextLine();
+                        System.out.print("Salary: ");
+                        double sal = sc.nextDouble();
+                        sc.nextLine();
+                        System.out.print("Dept: ");
+                        String dept = sc.nextLine();
 
-                        System.out.print("Branch: ");
-                        String branch = sc.next();
-
-                        System.out.print("Semester: ");
-                        int sem = sc.nextInt();
-
-                        System.out.print("Percentage: ");
-                        double per = sc.nextDouble();
-
-                        manager.addStudent(
-                            new Student(eno, name, branch, sem, per)
-                        );
+                        service.addEmployee(
+                                new Employee(id, name, sal, dept));
                     }
-
-                    case 2 -> manager.displayAll();
-
+                    case 2 -> service.displayAll();
                     case 3 -> {
-                        System.out.print("Enter Eno: ");
-                        int eno = sc.nextInt();
-
-                        Student s = manager.searchByEno(eno);
-                        if (s != null) s.display();
-                        else System.out.println(" Student not found");
+                        System.out.print("Enter ID: ");
+                        service.searchById(sc.nextInt());
                     }
-
                     case 4 -> {
-                        System.out.print("Enter Eno: ");
-                        int eno = sc.nextInt();
-
-                        System.out.print("New Branch: ");
-                        String branch = sc.next();
-
-                        manager.updateBranch(eno, branch);
+                        System.out.print("ID: ");
+                        int id = sc.nextInt();
+                        System.out.print("New Salary: ");
+                        service.updateSalary(id, sc.nextDouble());
                     }
-
                     case 5 -> {
-                        System.out.print("Enter Eno: ");
-                        int eno = sc.nextInt();
-
-                        manager.deleteByEno(eno);
+                        System.out.print("ID: ");
+                        service.deleteEmployee(sc.nextInt());
                     }
-
-                    case 6 -> {
-                        manager.sortStudents();
-                        manager.displayAll();
+                    case 6 -> service.displaySorted();
+                    case 7 -> service.displayDepartments();
+                    case 8 -> {
+                        System.out.println(" Exiting...");
+                        return;
                     }
-
-                    case 7 -> System.out.println(" Exiting system");
-
-                    default -> System.out.println(" Invalid choice");
+                    default -> System.out.println("Invalid choice");
                 }
-
-            } catch (StudentException e) {
+            } catch (CustomException e) {
                 System.out.println(e.getMessage());
             }
-
-        } while (choice != 7);
-
-        sc.close();
+        }
     }
 }
