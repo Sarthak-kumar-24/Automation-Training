@@ -10,7 +10,7 @@ public class CreateAndInsertStudents {
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/college",
                     "root",
-                    "Nishita"
+                    "Sarthak"
             );
 
             Statement stmt = con.createStatement();
