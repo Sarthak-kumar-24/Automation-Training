@@ -11,7 +11,7 @@ public class JdbcConnectionTest {
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/college",
                     "root",
-                    "Nishita"
+                    "Sarthak"
             );
 
             if (con != null) {
