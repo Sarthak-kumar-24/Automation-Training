@@ -11,7 +11,7 @@ public class DisplaySemester7EC {
             Connection con = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/college",
                     "root",
-                    "nishita"
+                    "Sarthak"
             );
 
             Statement stmt = con.createStatement();
